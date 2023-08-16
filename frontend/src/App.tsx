@@ -1,16 +1,27 @@
-import { Button, Container } from '@chakra-ui/react'
-
-
-
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Input, Button, } from '@chakra-ui/react'
+import { useEffect, useRef, useState } from 'react'
+import useUrl from './hooks/useUrl'
 function App() {
+  const [inputUrl, setInputUrl] = useState<string>('')
+  const { data, isLoading, error } = useUrl("/api/url/shorten", inputUrl)
+  const URlregex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')
+  const urlRef = useRef<HTMLInputElement>(null);
+  function handleClick() {
+    if (urlRef.current?.value) {
+      if (URlregex.test(urlRef.current?.value)) {
+        setInputUrl(urlRef.current?.value)
+      }
+      else {
+        setInputUrl('')
+      }
+    }
+  }
   return (
     <>
-    <Container marginTop={'28'} maxW='container.sm' bg='green.400' color='#262626'>
-      Lorem ipsum dolor sit amet consectetur adipisicing Expedita tempora impedit dolores eius eveniet at inventore corrupti sapiente quam ipsum quia est nesciunt doloribus, itaque nulla adipisci porro rem, quos dolor vel! Delectus quas molestias quis ab dolor ad ut ducimus soluta? Nesciunt amet perspiciatis error maxime quasi veniam! Neque totam error quod. Praesentium impedit, veniam vel consequatur pariatur, rem possimus veritatis soluta quibusdam nam cum odio maiores quos rerum ratione natus cupiditate. Fuga nihil explicabo provident deserunt aliquam a nesciunt, cum cupiditate praesentium unde atque ducimus quibusdam dolores nulla aperiam? Facere!
-    <Button colorScheme='blue'>adsad</Button>
-    </Container>
-</>
+      <Input autoFocus={true} ref={urlRef} placeholder="Enter your long URL here " />
+      <button onClick={handleClick}>click me </button>
+    </>
   )
 }
-export default App ;
+export default App

@@ -3,10 +3,25 @@ const dotenv = require("dotenv").config();
 const connectDB = require("./config/db");
 
 const app = express();
-app.use(express.json({ extended: false }));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "DELETE, PUT");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  if ("OPTIONS" == req.method) {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
 app.use("/", require("./routes/index"));
 app.use("/api/url", require("./routes/url"));
+app.use("/api/test", require("./routes/test"));
 const port = process.env.PORT || 5000;
 app.get("/", (req, res) => {
   res.send("API is running....");

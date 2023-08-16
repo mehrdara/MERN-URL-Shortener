@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
-import httpCommon from "../http-common";
-import { CanceledError } from "axios";
-import IUrl from "../types/IUrl";
-const useUrl = (endpoint:string) => {
-        const [data,setData]=useState<IUrl>();
-        const [error ,setError]=useState('');
-        const [isLoading,setLoading]=useState(false)
+import { useEffect, useState } from "react"
+import httpCommon from "../http-common"
+import { CanceledError } from "axios"
+const useUrl = (endpoint:string,inputUrl:string) => {
+        const [data,setData]=useState()
+        const [error ,setError]=useState()
+        const [isLoading,setLoading]=useState(true)
         useEffect(()=>{
+            if(inputUrl&&endpoint)
+            {
             const controller=new AbortController()
             setLoading(true)
+            httpCommon.get(endpoint)
             httpCommon
-            .get<IUrl>(endpoint,{signal:controller.signal})
+            .post(endpoint,{inputUrl:inputUrl},{signal:controller.signal})
             .then((res)=>{
                 setData(res.data)
             })
@@ -23,7 +25,8 @@ const useUrl = (endpoint:string) => {
                 setLoading(false)
             })
             return()=>controller.abort()
-        },[endpoint])
+            }
+        },[endpoint,inputUrl])
         return{data,error,isLoading}
 }
 

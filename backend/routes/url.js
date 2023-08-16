@@ -10,15 +10,15 @@ router.post("/shorten", async (req, res) => {
     return res.status(401).json(`Invalid input url ${baseUrl}`);
   }
   const urlCode = nanoid.nanoid(5);
-  if (validUrl.isUri(longUrl)) {
+  if (validUrl.isUri(inputUrl)) {
     try {
-      let url = await Url.findOne({ longUrl });
+      let url = await Url.findOne({ longUrl: inputUrl });
       if (url) {
         res.json(url);
       } else {
         const shortUrl = baseUrl + "/" + urlCode;
         url = new Url({
-          longUrl,
+          longUrl: inputUrl,
           shortUrl,
           urlCode,
           date: new Date(),
