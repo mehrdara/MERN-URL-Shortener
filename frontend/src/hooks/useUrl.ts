@@ -1,6 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react"
 import httpCommon from "../http-common"
 import { CanceledError } from "axios"
+type response={
+    urlCode:string
+    longUrl:string
+    shortUrl:string
+    date: Date
+    _id :number 
+}
 const useUrl = (endpoint:string,inputUrl:string) => {
         const [data,setData]=useState()
         const [error ,setError]=useState()

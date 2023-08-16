@@ -4,7 +4,7 @@ const connectDB = require("./config/db");
 
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -21,14 +21,13 @@ app.use(function (req, res, next) {
 });
 app.use("/", require("./routes/index"));
 app.use("/api/url", require("./routes/url"));
-app.use("/api/test", require("./routes/test"));
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 app.get("/", (req, res) => {
   res.send("API is running....");
 });
 connectDB();
 app
-  .listen(port, () => console.log(`server running on port ${port}`))
+  .listen(PORT, () => console.log(`server started on port ${PORT}`))
   .on("error", (err) => {
     process.once("SIGUSR2", () => {
       process.kill(process.pid, "SIGUSR2");
