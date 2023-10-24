@@ -1,29 +1,53 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useState } from 'react'
 import useUrl from './hooks/useUrl'
-import { border } from '@chakra-ui/react'
-
+import {
+  FormControl,
+  Button,
+  FormLabel,
+  FormErrorMessage,
+  Input,
+  FormHelperText,
+} from '@chakra-ui/react'
 function App() {
   const [inputUrl, setInputUrl] = useState<string>('')
+  const inputUrlRef=useRef<HTMLInputElement>(null);
   const { data, isLoading, error } = useUrl("/api/url/shorten", inputUrl)
+  const[isValidUrl ,setIsValidUrl]=useState<boolean>(false)
   const URlregex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')
-  const urlRef = useRef<HTMLInputElement>(null);
-  console.log(data)
-  function handleClick() {
-    if (urlRef.current?.value) {
-      if (URlregex.test(urlRef.current?.value)) {
-        setInputUrl(urlRef.current?.value)
-      }
-      else {
-        setInputUrl('')
-      }
+  const urlRef = useRef();
+  function handleClick() {    
+    if(inputUrlRef.current){ 
+      if(URlregex.test(inputUrlRef.current.value.toString()))
+    {      
+      setIsValidUrl(true)
+      setInputUrl(inputUrlRef.current.value)
+      console.log(data)
+      return
     }
+      else{      
+        setIsValidUrl(false)
+        return
+      }
+   }
   }
+  
   return (
     <>
-    <input ref={urlRef} placeholder='adad' style={{width:'500px' ,height:'100px' ,border:'1px solid black ',borderRadius:'4px'}} />
-    <button onClick={handleClick}>click me </button>
-    {data?<p>adad</p>:null}
+    <FormControl  isInvalid={isValidUrl} marginTop={200}>
+      <FormLabel >Email address</FormLabel>
+      <Input width='500px' type='url' placeholder='https://' ref={inputUrlRef}/>
+      {(isValidUrl)?(<FormErrorMessage>asdasdasd</FormErrorMessage>):<label>fine</label>}
+      <Button
+            mt={4}
+            colorScheme='teal'
+            type='submit'
+            onClick={handleClick}
+          >
+            Submit
+          </Button>
+          <label>{inputUrl}</label>
+    </FormControl>
     </>
   )
 }

@@ -18,7 +18,6 @@ const useUrl = (endpoint:string,inputUrl:string) => {
             {
             const controller=new AbortController()
             setLoading(true)
-            httpCommon.get(endpoint)
             httpCommon
             .post(endpoint,{inputUrl:inputUrl},{signal:controller.signal})
             .then((res)=>{
