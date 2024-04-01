@@ -2,17 +2,12 @@
 import { useEffect, useState } from "react"
 import httpCommon from "../http-common"
 import { CanceledError } from "axios"
-type response={
-    urlCode:string
-    longUrl:string
-    shortUrl:string
-    date: Date
-    _id :number 
-}
+import IUrl from "../types/IUrl"
+
 const useUrl = (endpoint:string,inputUrl:string) => {
-        const [data,setData]=useState()
-        const [error ,setError]=useState()
-        const [isLoading,setLoading]=useState(true)
+        const [data,setData]=useState<IUrl>()
+        const [error ,setError]=useState<string>()
+        const [isLoading,setLoading]=useState<boolean>(true)
         useEffect(()=>{
             if(inputUrl&&endpoint)
             {

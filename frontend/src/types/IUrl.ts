@@ -1,9 +1,10 @@
 export default
 interface IUrl {
-    urlCode: string,
-    longUrl: string,
-    shortUrl: string,
-    date: Date,
+  urlCode:string
+  longUrl:string
+  shortUrl:string
+  date: Date
+  _id :number 
   }
-  
+
   
